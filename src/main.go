@@ -1,36 +1,31 @@
 package main
 
 import (
+	"sample/repositories"
+	"sample/service"
+	"sample/utils"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-type Product struct {
+type User struct {
 	gorm.Model
-	Code string
-	Price uint
+	Name string
+	Age uint
 }
 
 func main() {
-	dsn := "root:password@tcp(mysql_db)/dev?charset=utf8mb4&parseTime=True&loc=Local"
-	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-
-	db.AutoMigrate(&Product{})
-
-	db.Create(&Product{Code: "D42", Price: 100})
-
-	var product Product
-	db.First(&product, 1)
-
+	db := utils.NewDBConnection()
+	optionRepository := repositories.NewOptionRepository(db)
+	productRepository := repositories.NewProductRepository(db)
+	productService := service.NewProductService(productRepository, optionRepository)
+	
 	router:= gin.Default()
 	router.Use(cors.Default())
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"code": product,
-		})
-	})
-	router.Run(":8080")
+	router.POST("/products", productService.RegisterProduct)
+	router.GET("products/:id", productService.GetProductAndOptionsById)
+	router.Run()
 }
