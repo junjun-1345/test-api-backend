@@ -1,31 +1,45 @@
 package main
 
 import (
-	"sample/repositories"
+	"net/http"
+	"sample/config"
+	"sample/controller"
+	"sample/helper"
+	"sample/repository"
+	"sample/router"
 	"sample/service"
-	"sample/utils"
 
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
+	"github.com/go-playground/validator/v10"
+	"github.com/rs/zerolog/log"
 )
 
-type User struct {
-	gorm.Model
-	Name string
-	Age uint
-}
-
 func main() {
-	db := utils.NewDBConnection()
-	optionRepository := repositories.NewOptionRepository(db)
-	productRepository := repositories.NewProductRepository(db)
-	productService := service.NewProductService(productRepository, optionRepository)
-	
-	router:= gin.Default()
-	router.Use(cors.Default())
 
-	router.POST("/products", productService.RegisterProduct)
-	router.GET("products/:id", productService.GetProductAndOptionsById)
-	router.Run()
+	log.Info().Msg("Started Server!")
+	// データベース設定
+	db := config.NewDBConnection()
+	validate := validator.New()
+
+	// Repository
+	tagsRepository := repository.NewTagsREpositoryImpl(db)
+
+	//Service
+	tagsService := service.NewTagsServiceImpl(tagsRepository, validate)
+
+	// Controller
+	tagsController := controller.NewTagsController(tagsService)
+
+	// Router
+	routes := router.NewRouter(tagsController)
+
+	// サーバー立ち上げ
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: routes,
+	}
+
+	//サーバーの状態に関するエラーハンドリング
+	err := server.ListenAndServe()
+	helper.ErrorPanic(err)
+
 }

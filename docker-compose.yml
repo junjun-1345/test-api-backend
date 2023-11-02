@@ -14,7 +14,7 @@ services:
       - data-volume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: dev
+      MYSQL_DATABASE: test_api_db
     ports:
       - "3306:3306"
 
