@@ -50,7 +50,7 @@ func (controller *TagsController) Update(ctx *gin.Context) {
 	helper.ErrorPanic(err)
 
 	// データのIDをURLから取得
-	tagId := ctx.Param("tagID")
+	tagId := ctx.Param("tagId")
 	id, err := strconv.Atoi(tagId)
 	helper.ErrorPanic(err)
 	// データに収納
@@ -71,7 +71,7 @@ func (controller *TagsController) Update(ctx *gin.Context) {
 // データを削除する
 func (controller *TagsController) Delete(ctx *gin.Context) {
 	// データのIDをURLから取得
-	tagId := ctx.Param("tagID")
+	tagId := ctx.Param("tagId")
 	id, err := strconv.Atoi(tagId)
 	helper.ErrorPanic(err)
 	controller.tagsService.Delete(id)
@@ -88,7 +88,7 @@ func (controller *TagsController) Delete(ctx *gin.Context) {
 // データを検索する
 func (controller *TagsController) FindById(ctx *gin.Context) {
 	// データのIDをURLから取得
-	tagId := ctx.Param("tagID")
+	tagId := ctx.Param("tagId")
 	id, err := strconv.Atoi(tagId)
 	helper.ErrorPanic(err)
 
