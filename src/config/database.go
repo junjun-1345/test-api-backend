@@ -30,7 +30,7 @@ func NewDBConnection() *gorm.DB {
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 
-	err := db.AutoMigrate(&model.Tags{})
+	err := db.AutoMigrate(&model.Tags{}, &model.Lines{})
 	if err != nil {
 		panic("マイグレーションに失敗しました")
 	}
