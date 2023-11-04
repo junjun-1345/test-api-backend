@@ -39,8 +39,10 @@ func (l *LinesServiceImpl) FindAll() []response.LinesReponce {
 	var lines []response.LinesReponce
 	for _, value := range result {
 		line := response.LinesReponce{
-			UserId:  value.UserID,
-			Content: value.Content,
+			Id:        int(value.ID),
+			CreatedAt: value.CreatedAt.String(),
+			UserId:    value.UserID,
+			Content:   value.Content,
 		}
 		lines = append(lines, line)
 	}
