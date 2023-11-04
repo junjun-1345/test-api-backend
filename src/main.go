@@ -35,12 +35,12 @@ func main() {
 	tagsService := service.NewTagsServiceImpl(tagsRepository, validate)
 	tagsController := controller.NewTagsController(tagsService)
 
-	// Lines
-	linesRepository := repository.NewLinesRepositoryImpl(db)
-	linesService := service.NewLinesServiceImpl(linesRepository, validate)
-	linesController := controller.NewLinesController(linesService)
+	// works
+	worksRepository := repository.NewWorksRepositoryImpl(db)
+	worksService := service.NewWorksServiceImpl(worksRepository, validate)
+	worksController := controller.NewWorksController(worksService)
 	// Router
-	routes := router.NewRouter(tagsController, linesController)
+	routes := router.NewRouter(tagsController, worksController)
 
 	// サーバー立ち上げ
 	server := &http.Server{

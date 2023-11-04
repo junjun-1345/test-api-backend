@@ -13,18 +13,18 @@ import (
 
 // ルートを設定するファイル
 
-type LinesController struct {
-	linesService service.LinesService
+type WorksController struct {
+	worksService service.WorksService
 }
 
-func NewLinesController(service service.LinesService) *LinesController {
-	return &LinesController{
-		linesService: service,
+func NewWorksController(service service.WorksService) *WorksController {
+	return &WorksController{
+		worksService: service,
 	}
 }
 
 // データを作成する
-func (controller *LinesController) Create(ctx *gin.Context) {
+func (controller *WorksController) Create(ctx *gin.Context) {
 	// LineBotの設定
 	bot := config.NewLineBot()
 	// リクエスト処理
@@ -40,7 +40,7 @@ func (controller *LinesController) Create(ctx *gin.Context) {
 			case *linebot.TextMessage:
 				if message.Text == "出勤" {
 					// DBに保存する
-					controller.linesService.Create(userId)
+					controller.worksService.ClockIn(userId)
 					webResponse := response.Response{
 						Code:   http.StatusOK,
 						Status: "ok",
@@ -56,6 +56,24 @@ func (controller *LinesController) Create(ctx *gin.Context) {
 					if err != nil {
 						fmt.Println(err.Error())
 					}
+				} else if message.Text == "退勤" {
+					controller.worksService.ClockOut(userId)
+					webResponse := response.Response{
+						Code:   http.StatusOK,
+						Status: "ok",
+						Data:   nil,
+					}
+					ctx.Header("Content-Type", "applicaton/json")
+					ctx.JSON(http.StatusOK, webResponse)
+					// 返信する
+					_, err := bot.ReplyMessage(
+						event.ReplyToken,
+						linebot.NewTextMessage("退勤しました!おつかれさまでした！"),
+					).Do()
+					if err != nil {
+						fmt.Println(err.Error())
+					}
+
 				} else {
 					_, err := bot.ReplyMessage(
 						event.ReplyToken,
@@ -76,8 +94,8 @@ func getResMessage(message string, userId string) string {
 }
 
 // データを全表示する
-func (controller *LinesController) FindAll(ctx *gin.Context) {
-	lineResponse := controller.linesService.FindAll()
+func (controller *WorksController) FindAll(ctx *gin.Context) {
+	lineResponse := controller.worksService.FindAll()
 
 	// 返却するデータに取得したデータを格納
 	webResponse := response.Response{

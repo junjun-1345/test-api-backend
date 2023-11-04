@@ -45,7 +45,7 @@ func (controller *TagsController) Create(ctx *gin.Context) {
 
 // データを更新する
 func (controller *TagsController) Update(ctx *gin.Context) {
-	updateTagsRequset := request.UpdateTagsRequest{}
+	updateTagsRequset := request.UpdatesTagsRequest{}
 	err := ctx.ShouldBindJSON(&updateTagsRequset)
 	helper.ErrorPanic(err)
 

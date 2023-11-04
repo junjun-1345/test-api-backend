@@ -7,7 +7,7 @@ import (
 
 type TagsService interface {
 	Create(tags request.CreateTagRequest)
-	Update(tags request.UpdateTagsRequest)
+	Update(tags request.UpdatesTagsRequest)
 	Delete(tagsId int)
 	FindById(tagsId int) response.TagsReponce
 	FindAll() []response.TagsReponce

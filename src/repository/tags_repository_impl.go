@@ -55,7 +55,7 @@ func (t *TagsRepositoryImpl) Save(tags model.Tags) {
 
 // アップデート
 func (t *TagsRepositoryImpl) Update(tags model.Tags) {
-	var updateTag = request.UpdateTagsRequest{
+	var updateTag = request.UpdatesTagsRequest{
 		Id:   tags.Id,
 		Name: tags.Name,
 	}

@@ -73,7 +73,7 @@ func (t TagsServiceImpl) FindById(tagsId int) response.TagsReponce {
 }
 
 // Update implements TagsService.
-func (t *TagsServiceImpl) Update(tags request.UpdateTagsRequest) {
+func (t *TagsServiceImpl) Update(tags request.UpdatesTagsRequest) {
 	// 更新するデータを取得
 	tagData, err := t.TagsRepository.FindById(tags.Id)
 	helper.ErrorPanic(err)

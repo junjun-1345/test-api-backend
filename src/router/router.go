@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter(tagsController *controller.TagsController, linesController *controller.LinesController) *gin.Engine {
+func NewRouter(tagsController *controller.TagsController, worksController *controller.WorksController) *gin.Engine {
 	//ルーター関連・初期化
 	router := gin.Default()
 	router.GET("", func(ctx *gin.Context) {
@@ -21,9 +21,9 @@ func NewRouter(tagsController *controller.TagsController, linesController *contr
 	tagRouter.PATCH("/:tagId", tagsController.Update)
 	tagRouter.DELETE("/:tagId", tagsController.Delete)
 
-	lineRouter := router.Group("/lines")
-	lineRouter.POST("/callback", linesController.Create)
-	lineRouter.GET("", linesController.FindAll)
+	workRouter := router.Group("/works")
+	workRouter.POST("/callback", worksController.Create)
+	workRouter.GET("", worksController.FindAll)
 
 	return router
 }
