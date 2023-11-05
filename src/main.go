@@ -45,7 +45,7 @@ func main() {
 	shiftsService := service.NewShiftsServiceImpl(shiftsRepository, validate)
 	shiftsController := controller.NewShiftController(shiftsService)
 
-	//shifts
+	//user
 	userRepository := repository.NewUserRepositoryImpl(db)
 	userService := service.NewUserServiceImpl(userRepository, validate)
 	userController := controller.NewUserController(userService)

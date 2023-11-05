@@ -26,11 +26,11 @@ func NewRouter(tagsController *controller.TagsController, worksController *contr
 	workRouter.GET("", worksController.FindAll)
 
 	userRouter := router.Group("/user")
-	userRouter.POST("")
+	userRouter.POST("", userController.Create)
 
 	shiftRouter := router.Group("/shift")
 	// 提出（個人のみ）
-	shiftRouter.POST("", userController.Create)
+	shiftRouter.POST("", shiftsController.Create)
 	// 確認（個人のみ)
 	// 修正（個人のみ）
 	// 削除（個人のみ）

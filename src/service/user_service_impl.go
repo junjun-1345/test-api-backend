@@ -25,17 +25,22 @@ func NewUserServiceImpl(userRepository repository.UserRepository, validate *vali
 
 // Create implements UserService.
 func (u *UserServiceImpl) Create(user request.CreateUserRequest) {
+
 	// Structの型にできない場合はエラーを出して終了する
 	err := u.Validate.Struct(user)
 	helper.ErrorPanic(err)
 
 	// IDが付与されるように変更
 	userModel := model.User{
-		UserID:     user.UserId,
-		Name:       user.Name,
-		WorkInWeek: user.WorkInWeek,
-		Rank:       1,
+		UserID:         user.UserId,
+		Name:           user.Name,
+		WorkInWeekDay:  user.WorkInWeekDay,
+		WorkInWeekTime: user.WorkInWeekTime,
+		Rank:           1,
+		Vacation:       0,
+		Admin:          false,
 	}
+
 	// DBに保存
 	u.UserRepository.Save(userModel)
 }
