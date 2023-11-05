@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter(tagsController *controller.TagsController, worksController *controller.WorksController, shiftsController *controller.ShiftController) *gin.Engine {
+func NewRouter(tagsController *controller.TagsController, worksController *controller.WorksController, shiftsController *controller.ShiftController, userController *controller.UserController) *gin.Engine {
 	//ルーター関連・初期化
 	router := gin.Default()
 	router.GET("", func(ctx *gin.Context) {
@@ -25,9 +25,12 @@ func NewRouter(tagsController *controller.TagsController, worksController *contr
 	workRouter.POST("/callback", worksController.Create)
 	workRouter.GET("", worksController.FindAll)
 
+	userRouter := router.Group("/user")
+	userRouter.POST("")
+
 	shiftRouter := router.Group("/shift")
 	// 提出（個人のみ）
-	shiftRouter.POST("", shiftsController.Create)
+	shiftRouter.POST("", userController.Create)
 	// 確認（個人のみ)
 	// 修正（個人のみ）
 	// 削除（個人のみ）

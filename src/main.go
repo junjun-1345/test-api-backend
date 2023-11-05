@@ -45,8 +45,13 @@ func main() {
 	shiftsService := service.NewShiftsServiceImpl(shiftsRepository, validate)
 	shiftsController := controller.NewShiftController(shiftsService)
 
+	//shifts
+	userRepository := repository.NewUserRepositoryImpl(db)
+	userService := service.NewUserServiceImpl(userRepository, validate)
+	userController := controller.NewUserController(userService)
+
 	// Router
-	routes := router.NewRouter(tagsController, worksController, shiftsController)
+	routes := router.NewRouter(tagsController, worksController, shiftsController, userController)
 
 	// サーバー立ち上げ
 	server := &http.Server{

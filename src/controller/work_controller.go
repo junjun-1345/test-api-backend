@@ -74,6 +74,50 @@ func (controller *WorksController) Create(ctx *gin.Context) {
 						fmt.Println(err.Error())
 					}
 
+				} else if message.Text == "はじめまして" {
+					userIdUri := "https://jobkai.vercel.app/user/" + userId
+					// 返信する
+					container := &linebot.BubbleContainer{
+						Type: linebot.FlexContainerTypeBubble,
+						Body: &linebot.BoxComponent{
+							Type:   linebot.FlexComponentTypeBox,
+							Layout: linebot.FlexBoxLayoutTypeVertical,
+							Contents: []linebot.FlexComponent{
+								&linebot.TextComponent{
+									Type:   linebot.FlexComponentTypeText,
+									Text:   "従業員登録",
+									Weight: linebot.FlexTextWeightTypeBold,
+									Size:   linebot.FlexTextSizeTypeXl,
+									Align:  linebot.FlexComponentAlignTypeCenter,
+								},
+							},
+						},
+						Footer: &linebot.BoxComponent{
+							Type:    linebot.FlexComponentTypeBox,
+							Layout:  linebot.FlexBoxLayoutTypeVertical,
+							Spacing: linebot.FlexComponentSpacingTypeSm,
+							Contents: []linebot.FlexComponent{
+								&linebot.ButtonComponent{
+									Type:   linebot.FlexComponentTypeButton,
+									Style:  linebot.FlexButtonStyleTypeLink,
+									Height: linebot.FlexButtonHeightTypeSm,
+									Action: linebot.NewURIAction("新規登録をする", userIdUri),
+								},
+								&linebot.BoxComponent{
+									Type:     linebot.FlexComponentTypeBox,
+									Layout:   linebot.FlexBoxLayoutTypeVertical,
+									Contents: []linebot.FlexComponent{},
+									Margin:   linebot.FlexComponentMarginTypeSm},
+							},
+						},
+					}
+					_, err := bot.ReplyMessage(
+						event.ReplyToken,
+						linebot.NewFlexMessage("alt text", container),
+					).Do()
+					if err != nil {
+						fmt.Println(err.Error())
+					}
 				} else {
 					_, err := bot.ReplyMessage(
 						event.ReplyToken,
