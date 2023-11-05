@@ -14,7 +14,7 @@ func NewDBConnection() *gorm.DB {
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 
-	err := db.AutoMigrate(&model.Tags{}, &model.Works{}, &model.Shift{})
+	err := db.AutoMigrate(&model.Tags{}, &model.Works{}, &model.Shift{}, &model.User{})
 	if err != nil {
 		panic("マイグレーションに失敗しました")
 	}
